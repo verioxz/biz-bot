@@ -4,6 +4,7 @@ from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 from google.generativeai import MakerSuite
 from urllib.parse import quote
+from werkzeug.urls import url_quote
 import os
 
 app = Flask(__name__)
