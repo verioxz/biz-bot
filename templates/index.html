@@ -1,0 +1,115 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BizBot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 400px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #45aa49;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 1.5em;
+        }
+        .chatbox {
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+        }
+        .chatbox div {
+            margin-bottom: 10px;
+        }
+        .chatbox .user-message {
+            text-align: right;
+        }
+        .chatbox .bot-message {
+            text-align: left;
+            color: #4CAF50;
+        }
+        .input-container {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+        #user-input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            font-size: 1em;
+        }
+        #send-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        #send-btn:hover {
+            background-color: #45a049;
+        }
+        #logo {
+            display: none;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">BizBot</div>
+        <div class="chatbox" id="chatbox"></div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type your message here..." />
+            <button id="send-btn" onclick="sendMessage()">Send</button>
+        </div>
+        <img id="logo" />
+    </div>
+
+    <script>
+        function sendMessage() {
+            var userMessage = $('#user-input').val();
+            $('#chatbox').append('<div class="user-message"><b>You:</b> ' + userMessage + '</div>');
+
+            $.ajax({
+                type: 'POST',
+                url: '/chat',
+                contentType: 'application/json',
+                data: JSON.stringify({message: userMessage}),
+                success: function(response) {
+                    if (userMessage.toLowerCase().includes('logo')) {
+                        var reader = new FileReader();
+                        reader.onload = function(e) {
+                            $('#logo').attr('src', e.target.result).show();
+                        };
+                        reader.readAsDataURL(response);
+                    } else {
+                        $('#chatbox').append('<div class="bot-message"><b>BizBot:</b> ' + response.reply + '</div>');
+                    }
+                }
+            });
+
+            $('#user-input').val('');
+            $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
+        }
+    </script>
+</body>
+</html>
