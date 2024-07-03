@@ -3,6 +3,7 @@ import random
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
 from google.generativeai import MakerSuite
+from urllib.parse import quote
 import os
 
 app = Flask(__name__)
