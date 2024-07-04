@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify, render_template, send_file
 import random
 from io import BytesIO
 from PIL import Image, ImageDraw, ImageFont
-from google.generativeai import MakerSuite
+import google.generativeai as palm
+{"model": "models/chat-bison-001"}
 from urllib.parse import quote
 from werkzeug.urls import url_quote_plus
 import os
@@ -11,6 +12,7 @@ app = Flask(__name__)
 
 # Initialize MakerSuite with API Key from environment variable
 client = MakerSuite(api_key=os.getenv('AIzaSyDQegtx6ycbXTp7treDwhdzmba2V6WdSQ0'))
+palm.configure(api_key="AIzaSyDQegtx6ycbXTp7treDwhdzmba2V6WdSQ0")
 
 def generate_business_idea():
     ideas = [
