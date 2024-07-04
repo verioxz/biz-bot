@@ -11,7 +11,7 @@ import os
 app = Flask(__name__)
 
 # Initialize MakerSuite with API Key from environment variable
-client = MakerSuite(api_key=os.getenv('AIzaSyDQegtx6ycbXTp7treDwhdzmba2V6WdSQ0'))
+
 palm.configure(api_key="AIzaSyDQegtx6ycbXTp7treDwhdzmba2V6WdSQ0")
 
 def generate_business_idea():
